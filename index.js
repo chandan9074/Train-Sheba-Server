@@ -19,22 +19,27 @@ async function run() {
     await client.connect();
 
     const database = client.db("trainSheba");
-    const destinationsCollection = database.collection("destinations");
+    const trainsCollection = database.collection("trains");
+    const letestDestinationsCollection = database.collection("letestDestinations");
     // const ordersCollection = database.collection("orders");
     // const reviewCollection = database.collection("review");
     // const usersCollection = database.collection("users");
 
 
-    const docs = [
-      { fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", travelTime:"Daily", price: "400"},
-      { name: "lettuce", healthy: true },
-      { name: "donut", healthy: false }
-    ];
+    // const docs = [
+    //   { class: "Air Conditioned Class", fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", trainName:"Shuborno Express", sit:"60", availableSit:"60", araivelTime:"6.00pm", departureTime:"5.00am", travelTime:"Daily", available:false, price: "610"},
+    //   { class: "Shovon Chair", fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", trainName:"Shuborno Express", sit:"60", availableSit:"60", araivelTime:"6.00pm", departureTime:"5.00am", travelTime:"Daily", available:false, price: "310"},
+    // ];
     // this option prevents additional documents from being inserted if one fails
+    // const options = { ordered: true };
+    // const result = await trainsCollection.insertMany(docs, options);
+
+    const docs = [
+      {img:"https://i.ibb.co/YXfBqXq/Dhaka-to-Chittagong-train-Schedule-and-Ticket-Price.jpg", formDistrict: "Dhaka", toDistrict: "Chittagone", fromStation: "Airport, Bimanbondor", toStation: "Chittagong, Railstation", travelTime: "Daily", price: "340", },
+      {img:"https://i.ibb.co/mNJ970k/Dhaka-to-Sylhet-Train-1200x900.png", formDistrict: "Dhaka", toDistrict: "Sylhet", fromStation: "Airport, Bimanbondor", toStation: "Sylhet, Railstation", travelTime: "Daily", price: "650", }
+    ]
     const options = { ordered: true };
-    // const result = await foods.insertMany(docs, options);
-
-
+    // const result = await letestDestinationsCollection.insertMany(docs, options);
 
     // // // get api
     // app.get("/product", async (req, res)=>{
@@ -162,7 +167,7 @@ async function run() {
   }
 }
 
-// run().catch(console.dir);
+run().catch(console.dir);
 
 app.get("/", (req, res)=>{
     res.send("Responding from server site")
