@@ -21,11 +21,13 @@ async function run() {
     const database = client.db("trainSheba");
     const trainsCollection = database.collection("trains");
     const letestDestinationsCollection = database.collection("letestDestinations");
+    const letestNewsCollection = database.collection("news");
+
     // const ordersCollection = database.collection("orders");
     // const reviewCollection = database.collection("review");
     // const usersCollection = database.collection("users");
 
-
+    //trains docs
     // const docs = [
     //   { class: "Air Conditioned Class", fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", trainName:"Shuborno Express", sit:"60", availableSit:"60", araivelTime:"6.00pm", departureTime:"5.00am", travelTime:"Daily", available:false, price: "610"},
     //   { class: "Shovon Chair", fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", trainName:"Shuborno Express", sit:"60", availableSit:"60", araivelTime:"6.00pm", departureTime:"5.00am", travelTime:"Daily", available:false, price: "310"},
@@ -34,12 +36,32 @@ async function run() {
     // const options = { ordered: true };
     // const result = await trainsCollection.insertMany(docs, options);
 
-    const docs = [
-      {img:"https://i.ibb.co/YXfBqXq/Dhaka-to-Chittagong-train-Schedule-and-Ticket-Price.jpg", formDistrict: "Dhaka", toDistrict: "Chittagone", fromStation: "Airport, Bimanbondor", toStation: "Chittagong, Railstation", travelTime: "Daily", price: "340", },
-      {img:"https://i.ibb.co/mNJ970k/Dhaka-to-Sylhet-Train-1200x900.png", formDistrict: "Dhaka", toDistrict: "Sylhet", fromStation: "Airport, Bimanbondor", toStation: "Sylhet, Railstation", travelTime: "Daily", price: "650", }
-    ]
+    //letest destination docs
+    // const docs = [
+    //   {img:"https://i.ibb.co/YXfBqXq/Dhaka-to-Chittagong-train-Schedule-and-Ticket-Price.jpg", formDistrict: "Dhaka", toDistrict: "Chittagone", fromStation: "Airport, Bimanbondor", toStation: "Chittagong, Railstation", travelTime: "Daily", price: "340", },
+    //   {img:"https://i.ibb.co/mNJ970k/Dhaka-to-Sylhet-Train-1200x900.png", formDistrict: "Dhaka", toDistrict: "Sylhet", fromStation: "Airport, Bimanbondor", toStation: "Sylhet, Railstation", travelTime: "Daily", price: "650", }
+    // ]
+
+    //letest news
+    // const docs = [
+    //   {img: "https://i.ibb.co/m8WF29Y/train-sufferring-0.jpg", title: "New time for train announced after schedule collapses", created: "Admin", postTime:"9.35", des:"Bangladesh Railway has rescheduled for today the departure time of several trains from Dhaka’s Kamalapur Railway Station amid immense sufferings of holidaymakers due to schedule collapse ahead of Eid-ul-Azha.The home-goers who are waiting at the station for hours do not know when their trains will leave Dhaka and reach their destinations"},
+    //   {img: "https://i.ibb.co/BqRVQZJ/maitree-0.jpg", title: "Maitree to run 6 days a week", created: "Tuhin Shubhra Adhikary", postTime:"9.40", des:"Bangladesh Railway has started working to increase the number of trips between Bangladesh and India.Once the proceedings are completed, Maitree Express, on Dhaka-Kolkata route, would run six days a week instead of four and Bandhan Express, on Khulna-Kolkata route, would run three days a week instead of one."},
+      
+    // ]
     const options = { ordered: true };
-    // const result = await letestDestinationsCollection.insertMany(docs, options);
+    // const result = await letestNewsCollection.insertMany(docs, options);
+
+    app.get("/letestdestinations", async (req, res)=>{
+      const cursor = letestDestinationsCollection.find({});
+      const destinations = await cursor.toArray();
+      res.send(destinations);
+    })
+
+    app.get("/letestnews", async (req, res)=>{
+      const cursor = letestNewsCollection.find({});
+      const news = await cursor.toArray();
+      res.send(news);
+    })
 
     // // // get api
     // app.get("/product", async (req, res)=>{
