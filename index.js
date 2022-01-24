@@ -29,8 +29,8 @@ async function run() {
 
     //trains docs
     // const docs = [
-    //   { class: "Air Conditioned Class", fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", trainName:"Shuborno Express", sit:"60", availableSit:"60", araivelTime:"6.00pm", departureTime:"5.00am", travelTime:"Daily", available:false, price: "610"},
-    //   { class: "Shovon Chair", fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", trainName:"Shuborno Express", sit:"60", availableSit:"60", araivelTime:"6.00pm", departureTime:"5.00am", travelTime:"Daily", available:false, price: "310"},
+    //   { classname: "Air Conditioned Class", fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", trainName:"Shuborno Express", sit:"60", availableSit:"60", araivelTime:"6.00pm", departureTime:"5.00am", travelTime:"Daily", available:false, price: "610"},
+    //   { classname: "Shovon Chair", fromDistrict: "Dhaka", fromStation: "Airport, Bimanbondor", toDistrict: "Kumilla", toStation: "Kumilla, Kandirpar", trainName:"Shuborno Express", sit:"60", availableSit:"60", araivelTime:"6.00pm", departureTime:"5.00am", travelTime:"Daily", available:false, price: "310"},
     // ];
     // this option prevents additional documents from being inserted if one fails
     // const options = { ordered: true };
@@ -63,9 +63,15 @@ async function run() {
       res.send(news);
     })
 
+    app.get("/trains", async (req, res)=>{
+      const cursor = trainsCollection.find({});
+      const train = await cursor.toArray();
+      res.send(train);
+    })
+
     app.post("/trains", async (req, res)=>{
       const train = req.body;
-      const query = { fromDistrict:train.from, toDistrict: train.to, class: train.classname };
+      const query = { fromDistrict:train.from, toDistrict: train.to, classname: train.classname };
       const cursor = trainsCollection.find(query);
       // console.log("cursor", cursor);
       const searchTrains = await cursor.toArray();
