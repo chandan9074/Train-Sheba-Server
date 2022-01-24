@@ -63,6 +63,15 @@ async function run() {
       res.send(news);
     })
 
+    app.post("/trains", async (req, res)=>{
+      const train = req.body;
+      const query = { fromDistrict:train.from, toDistrict: train.to, class: train.classname };
+      const cursor = trainsCollection.find(query);
+      // console.log("cursor", cursor);
+      const searchTrains = await cursor.toArray();
+      res.send(searchTrains);
+    })
+
     // // // get api
     // app.get("/product", async (req, res)=>{
 
