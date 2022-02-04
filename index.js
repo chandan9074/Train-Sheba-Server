@@ -4,6 +4,7 @@ const app = express();
 require('dotenv').config()
 const cors = require("cors");
 const ObjectId = require("mongodb").ObjectId;
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 app.use(cors());
 app.use(express.json());
@@ -76,6 +77,17 @@ async function run() {
       // console.log("cursor", cursor);
       const searchTrains = await cursor.toArray();
       res.send(searchTrains);
+    })
+
+    app.post("/create-payment-intent", async (req, res)=>{
+      const paymentInfo = req.body;
+      const amount = paymentInfo.price * 100;
+      const paymentIntent = await stripe.paymentIntent.create({
+        amount : amount,
+        currency : 'usd',
+        payment_method_types: ['card']
+      });
+      res.json({clientSecret: paymentIntent.client_secret})
     })
 
     // // // get api
