@@ -23,6 +23,7 @@ async function run() {
     const trainsCollection = database.collection("trains");
     const letestDestinationsCollection = database.collection("letestDestinations");
     const letestNewsCollection = database.collection("news");
+    const usersCollection = database.collection("users");
 
     // const ordersCollection = database.collection("orders");
     // const reviewCollection = database.collection("review");
@@ -78,6 +79,20 @@ async function run() {
       const searchTrains = await cursor.toArray();
       res.send(searchTrains);
     })
+    // //post api
+    app.post("/user", async (req, res)=>{
+        const user = req.body;
+        const result = await usersCollection.insertOne(user);
+        res.json(result)
+    })
+    app.put('/user', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const options = { upsert: true };
+            const updateDoc = { $set: user };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.json(result);
+        });
 
     app.post("/create-payment-intent", async (req, res)=>{
       const paymentInfo = req.body;
