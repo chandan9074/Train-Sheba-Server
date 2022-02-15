@@ -24,6 +24,7 @@ async function run() {
     const letestDestinationsCollection = database.collection("letestDestinations");
     const letestNewsCollection = database.collection("news");
     const usersCollection = database.collection("users");
+    const reviewCollection = database.collection("review");
 
     // const ordersCollection = database.collection("orders");
     // const reviewCollection = database.collection("review");
@@ -86,13 +87,25 @@ async function run() {
         res.json(result)
     })
     app.put('/user', async (req, res) => {
-            const user = req.body;
-            const filter = { email: user.email };
-            const options = { upsert: true };
-            const updateDoc = { $set: user };
-            const result = await usersCollection.updateOne(filter, updateDoc, options);
-            res.json(result);
-        });
+        const user = req.body;
+        const filter = { email: user.email };
+        const options = { upsert: true };
+        const updateDoc = { $set: user };
+        const result = await usersCollection.updateOne(filter, updateDoc, options);
+        res.json(result);
+    });
+
+    app.post("/review", async (req, res)=>{
+        const review = req.body;
+        const result = await reviewCollection.insertOne(review);
+        res.json(result)
+    })
+    
+    app.get("/review", async (req, res)=>{
+      const cursor = reviewCollection.find({});
+      const review = await cursor.toArray();
+      res.send(review);
+    })
 
     app.post("/create-payment-intent", async (req, res)=>{
       const paymentInfo = req.body;
