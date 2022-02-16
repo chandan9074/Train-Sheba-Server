@@ -6,6 +6,10 @@ const cors = require("cors");
 const ObjectId = require("mongodb").ObjectId;
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
+let bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 app.use(cors());
 app.use(express.json());
 
@@ -58,6 +62,11 @@ async function run() {
       const cursor = letestDestinationsCollection.find({});
       const destinations = await cursor.toArray();
       res.send(destinations);
+    })
+    app.post("/letestdestinations", async (req, res)=>{
+        const des = req.body;
+        const result = await letestDestinationsCollection.insertOne(des);
+        res.json(result)
     })
 
     app.get("/letestnews", async (req, res)=>{
