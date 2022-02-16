@@ -75,6 +75,12 @@ async function run() {
       res.send(news);
     })
 
+    app.post("/letestnews", async (req, res)=>{
+        const news = req.body;
+        const result = await letestNewsCollection.insertOne(news);
+        res.json(result)
+    })
+    
     app.get("/trains", async (req, res)=>{
       const cursor = trainsCollection.find({});
       const train = await cursor.toArray();
