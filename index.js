@@ -29,6 +29,8 @@ async function run() {
     const letestNewsCollection = database.collection("news");
     const usersCollection = database.collection("users");
     const reviewCollection = database.collection("review");
+    const trainTicketManageCollection = database.collection("trainTicketManage");
+    const userTrainBookingsCollection = database.collection("userTrainBookings");
 
     // const ordersCollection = database.collection("orders");
     // const reviewCollection = database.collection("review");
@@ -120,6 +122,30 @@ async function run() {
       const cursor = reviewCollection.find({});
       const review = await cursor.toArray();
       res.send(review);
+    })
+
+    app.post("/search-train-tickets-manage", async (req, res)=>{
+      const train = req.body;
+      const query = { fromDistrict:train.from, toDistrict: train.to, classname: train.classname, departure: train.departure };
+      const cursor = trainTicketManageCollection.find(query);
+      // console.log("cursor", cursor);
+      const searchTrains = await cursor.toArray();
+      res.send(searchTrains);
+    })
+
+    app.put('/search-train-tickets-manage', async (req, res) => {
+        const trainData = req.body;
+        const filter = { fromDistrict: trainData.fromDistrict, toDistrict: trainData.toDistrict, classname: trainData.classname, departure: trainData.departure };
+        const options = { upsert: true };
+        const updateDoc = { $set: trainData };
+        const result = await trainTicketManageCollection.updateOne(filter, updateDoc, options);
+        res.json(result);
+    });
+
+    app.post("/user-train-bookings", async (req, res)=>{
+        const bookings = req.body;
+        const result = await userTrainBookingsCollection.insertOne(bookings);
+        res.json(result)
     })
 
     app.post("/create-payment-intent", async (req, res)=>{
