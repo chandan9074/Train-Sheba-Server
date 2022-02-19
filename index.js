@@ -7,8 +7,8 @@ const ObjectId = require("mongodb").ObjectId;
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 let bodyParser = require('body-parser');
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({limit: '30mb'}));
+app.use(bodyParser.urlencoded({limit: '30mb', extended: false}));
 
 app.use(cors());
 app.use(express.json());
@@ -69,6 +69,12 @@ async function run() {
         const des = req.body;
         const result = await letestDestinationsCollection.insertOne(des);
         res.json(result)
+    })
+
+    app.delete('/letestdestinations/:id', async (req, res)=>{
+      const userid = req.params.id;
+      const query = {_id: ObjectId(userid)};
+      const result = await letestDestinationsCollection.deleteOne(query);
     })
 
     app.get("/letestnews", async (req, res)=>{
