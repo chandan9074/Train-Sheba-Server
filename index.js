@@ -77,6 +77,16 @@ async function run() {
       const result = await letestDestinationsCollection.deleteOne(query);
     })
 
+    app.put('/letestdestinations/:id', async (req, res) => {
+        const id = req.params.id;
+        const trainData = req.body;
+        const filter = {_id: ObjectId(id)};
+        const options = { upsert: false };
+        const updateDoc = { $set: trainData };
+        const result = await letestDestinationsCollection.updateOne(filter, updateDoc, options);
+        res.json(result);
+    });
+
     app.get("/letestnews", async (req, res)=>{
       const cursor = letestNewsCollection.find({});
       const news = await cursor.toArray();
