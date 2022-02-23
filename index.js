@@ -182,6 +182,21 @@ async function run() {
         res.json(result)
     })
 
+    app.get("/user-train-bookings", async (req, res)=>{
+      const cursor = userTrainBookingsCollection.find({});
+      const bookings = await cursor.toArray();
+      res.send(bookings);
+    })
+
+    app.post("/user-train-bookings/my-bookings/", async (req, res)=>{
+      const train = req.body;
+      const query = { email: train.email };
+      const cursor = userTrainBookingsCollection.find(query);
+      // console.log("cursor", cursor);
+      const searchTrains = await cursor.toArray();
+      res.send(searchTrains);
+    })
+
     app.post("/create-payment-intent", async (req, res)=>{
       const paymentInfo = req.body;
       const amount = paymentInfo.newUpdatePrice * 100;
