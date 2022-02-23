@@ -75,6 +75,7 @@ async function run() {
       const userid = req.params.id;
       const query = {_id: ObjectId(userid)};
       const result = await letestDestinationsCollection.deleteOne(query);
+      res.json(result)
     })
 
     app.put('/letestdestinations/:id', async (req, res) => {
@@ -97,6 +98,23 @@ async function run() {
         const news = req.body;
         const result = await letestNewsCollection.insertOne(news);
         res.json(result)
+    })
+
+    app.put('/letestnews/:id', async (req, res) => {
+        const id = req.params.id;
+        const newsData = req.body;
+        const filter = {_id: ObjectId(id)};
+        const options = { upsert: false };
+        const updateDoc = { $set: newsData };
+        const result = await letestNewsCollection.updateOne(filter, updateDoc, options);
+        res.json(result);
+    });
+
+    app.delete('/letestnews/:id', async (req, res)=>{
+      const newsid = req.params.id;
+      const query = {_id: ObjectId(newsid)};
+      const result = await letestNewsCollection.deleteOne(query);
+      res.json(result)
     })
     
     app.get("/trains", async (req, res)=>{
