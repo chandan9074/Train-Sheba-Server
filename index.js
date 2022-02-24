@@ -122,6 +122,29 @@ async function run() {
       const train = await cursor.toArray();
       res.send(train);
     })
+    
+    app.post("/train", async (req, res)=>{
+        const train = req.body;
+        const result = await trainsCollection.insertOne(train);
+        res.json(result);
+    })
+
+    app.put('/train/:id', async (req, res) => {
+        const id = req.params.id;
+        const trainData = req.body;
+        const filter = {_id: ObjectId(id)};
+        const options = { upsert: false };
+        const updateDoc = { $set: trainData };
+        const result = await trainsCollection.updateOne(filter, updateDoc, options);
+        res.json(result);
+    });
+
+    app.delete('/train/:id', async (req, res)=>{
+      const trainID = req.params.id;
+      const query = {_id: ObjectId(trainID)};
+      const result = await trainsCollection.deleteOne(query);
+      res.json(result)
+    })
 
     app.post("/trains", async (req, res)=>{
       const train = req.body;
@@ -145,6 +168,13 @@ async function run() {
         const result = await usersCollection.updateOne(filter, updateDoc, options);
         res.json(result);
     });
+
+    app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            res.json(user);
+        });
 
     app.post("/review", async (req, res)=>{
         const review = req.body;
