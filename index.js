@@ -175,6 +175,14 @@ async function run() {
             const user = await usersCollection.findOne(query);
             res.json(user);
         });
+    
+    app.put('/users/admin', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: { admin: true } };
+            const result = await usersCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
 
     app.post("/review", async (req, res)=>{
         const review = req.body;
