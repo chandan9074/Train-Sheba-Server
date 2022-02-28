@@ -196,6 +196,15 @@ async function run() {
       res.send(review);
     })
 
+    app.post("/all/search-train-tickets-manage", async (req, res)=>{
+      const train = req.body;
+      const query = { departure: train.today };
+      const cursor = trainTicketManageCollection.find(query);
+      // console.log("cursor", cursor);
+      const searchTrains = await cursor.toArray();
+      res.send(searchTrains);
+    })
+
     app.post("/search-train-tickets-manage", async (req, res)=>{
       const train = req.body;
       const query = { fromDistrict:train.from, toDistrict: train.to, classname: train.classname, departure: train.departure };
